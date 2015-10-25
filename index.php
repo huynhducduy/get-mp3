@@ -27,7 +27,7 @@
 			</div>
 		</div>
 		<div class="row">
-			<div class="jumbotron" style="padding: 15px 0">
+			<div class="jumbotron">
 				<div class="container">
 					<form class="navbar-form" onsubmit="return getInfo()">
 						<div class="form-group">
@@ -45,19 +45,23 @@
 				</div>
 			</div>
 		</div>
-		<div class="row" style='display: none;' id='result'>
-			<div class="jumbotron" style="padding: 15px 0;">
-				<div id='loading' style='display: none'>
+		<div class="row" id='result'>
+			<div class="jumbotron">
+				<div id='loading'>
 					<center>
 						<img src="loading.gif"/>
 					</center>
 				</div>
 				<div class="container">
-					<div class="alert alert-danger" role="alert" style='margin-bottom: 0;display: none' id='errorAlert'><b>Lỗi!</b> <span id='errorContent'></span></div>
+					<div class="alert alert-danger" role="alert" id='errorAlert'><b>Lỗi!</b> <span id='errorContent'></span></div>
 				</div>
-				<div class="container" id='resultContainer' style='display: none;text-align: center;'>
-					<div style='text-align: center'><img src="" class="img-circle" witdh="140px" height="140px" id='resultImage'></div>
-					<h2 style='text-align: center'><a href='' target="_blank" style='text-decoration: none;color:#000' id='resultTitleLink'><b id='resultTitle'></b/></a> - <a href='' target="_blank" style='text-decoration: none;color:#000' id='resultArtist'></a></h2>
+				<div class="container" id='resultContainer'>
+					<div id="imageContainer">
+						<a href="" id="resultVideoLink" target="_blank"><img src="" class="img-circle" width="100px" height="100px" id='resultVideoImage'></a>&nbsp;
+						<a href="" id="resultArtistLink" target="_blank"><img src="" class="img-circle" width="140px" height="140px" id='resultArtistImage'></a>&nbsp;
+						<a href="" id="resultAlbumLink" target="_blank"><img src="" class="img-circle" width="100px" height="100px" id='resultAlbumImage'></a>
+					</div>
+					<h2 id='mainInfo'><a href='' class='noStyle' target="_blank"  id='resultTitleLink'><b id='resultTitle'></b/></a> - <a href='' target="_blank"  class='noStyle' id='resultArtist'></a></h2>
 					<div class="player">
 						<audio id="player__source" src="" preload="auto" controls loop>
 							<p>Trình duyệt của bạn không hỗ trợ HTML5 Audio</p>
@@ -70,63 +74,76 @@
 							<button id="muted" class="player--volumn icon-volume-high"></button>
 						</div>
 					</div>
-					<form class="form-horizontal">
+					<form class="form-horizontal" id="form128">
 						<div class="form-group">
-							<label for="download" class="col-sm-2 control-label" style='font-weight: normal'>Download 128kbps</label>
+							<label for="download" class="col-sm-2 control-label">Download 128kbps</label>
 							<div class="col-sm-9">
 								<div class="input-group">
-									<input type="text" class="form-control" id='resultDownload'>
+									<input type="text" class="form-control" id='result128'>
 									<span class="input-group-btn">
-										<a href="" id="btnDownload"><button class="btn btn-default" type="button">Download</button></a>
+										<a download id="a128" class="btn btn-default">Download</a>
 									</span>
 								</div>
 							</div>
 						</div>
-						<div class="form-group">
-							<label for="download" class="col-sm-2 control-label" style='font-weight: normal'>Download 320kbps</label>
+						<div class="form-group" id="form320">
+							<label for="download" class="col-sm-2 control-label">Download 320kbps</label>
 							<div class="col-sm-9">
 								<div class="input-group">
-									<input type="text" class="form-control" id='resultDownloadHq'>
+									<input type="text" class="form-control" id='result320'>
 									<span class="input-group-btn">
-										<a href="" id="btnDownloadHq"><button class="btn btn-default" type="button" id='btnHq'>Download</button></a>
+										<a download id="a320" class="btn btn-default">Download</button></a>
 									</span>
 								</div>
 							</div>
 						</div>
-						<div class="form-group">
-							<label for="download" class="col-sm-2 control-label" style='font-weight: normal'>Lyric</label>
+						<div class="form-group" id="formLl">
+							<label for="download" class="col-sm-2 control-label">Download LossLess</label>
 							<div class="col-sm-9">
 								<div class="input-group">
-									<input type="text" class="form-control" id='resultLyric'>
+									<input type="text" class="form-control" id='resultLl'>
 									<span class="input-group-btn">
-										<a href="" download id="btnDownloadLyric"><button class="btn btn-default" type="button" id='btnLyric'>Download</button></a>
+										<a download id="aLl" class="btn btn-default">Download</button></a>
 									</span>
 								</div>
 							</div>
 						</div>
-						<div class="form-group">
-							<label for="download" class="col-sm-2 control-label" style='font-weight: normal'>Embed</label>
+						<div class="form-group" id="formLyricFile">
+							<label for="lyric" class="col-sm-2 control-label">Lyric File</label>
+							<div class="col-sm-9">
+								<div class="input-group">
+									<input type="text" class="form-control" id='resultLyricFile'>
+									<span class="input-group-btn">
+										<a download id="aLyricFile" class="btn btn-default">Download</button></a>
+									</span>
+								</div>
+							</div>
+						</div>
+						<div class="form-group" id='formEmbed'>
+							<label for="embed" class="col-sm-2 control-label">Embed</label>
 							<div class="col-sm-9">
 								<div class="input-group">
 									<input type="text" class="form-control" id='resultEmbed'>
 									<span class="input-group-btn">
-										<button class="btn btn-default" type="button" id='btnCopy' onclick='copyEmbed()'>Copy</button>
+										<button class="btn btn-default" type="button" id='btnEmbed' onclick='copyEmbed()'>Copy</button>
 									</span>
 								</div>
 							</div>
 						</div>
 					</form>
-					<h2 style="margin-top: 10px;margin-bottom: 10px;">Lời bài hát</h2>
-					<div class="lyric" id="_divLyricHtml" style="background-color: #fff;">
-                    	<p id="lyricText" class="pd_lyric" style="max-height:none;margin-bottom:5px"></p>
+					<div id='lyricTextDiv'>
+					<h2 id='4lyric'>Lời bài hát</h2>
+					<div class="lyric" id="_divLyricHtml" >
+                    	<p id="resultlyricText" class="pd_lyric"></p>
                 	</div>
+					</div>
 				</div>
 			</div>
 		</div>
 		<div class="row">
-			<div class="jumbotron" style="padding: 15px 0">
+			<div class="jumbotron">
 				<div class="container" style="text-align: right">
-					Copyright by <a href="http://fb.com/huynhducuduy" style="color: #000; text-decoration: none;"><b>Del Huỳnh</b></a>
+					Copyright by <a href="http://fb.com/huynhducuduy" class='noStyle'><b>Del Huỳnh</b></a>
 				</div>
 			</div>
 		</div>

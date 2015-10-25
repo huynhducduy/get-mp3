@@ -94,6 +94,7 @@ $(document).ready(function() {
 
 	function getInfo()
 	{
+		$('#playPause').click();
 		$('#result').fadeIn('fast', function () {
 			$('#errorAlert').fadeOut('fast', function () {
 				$('#resultContainer').fadeOut('fast', function () {
@@ -122,40 +123,91 @@ $(document).ready(function() {
 										$('#errorAlert').show();
 									} else
 									{
-										$('#resultTitleLink').attr('href',result['link']);
 										$('#resultTitle').text(result['title']);
-										$('#resultImage').attr('src',result['image']);
-										$('#resultArtist').text(result['artist']).attr('href',result['artistLink']);
-										$('#resultDownload').val(result['download']);
-										$('#player__source').attr('src',result['download']);
-										$('#btnDownload').attr('href',result['download']);
-										if (result['lyric'] != '' && result['lyric'] != 'http://lrc.nct.nixcdn.com/null')
+										$('#resultTitleLink').attr('href',result['link']);
+										$('#resultArtist').text(result['artist']);
+										if (result['artistLink'] != null) { 
+											$('#resultArtist').attr('href',result['artistLink']);
+										} else {
+											$('#resultArtist').removeAttr('href');
+										}
+										
+										if (result['artistLink'] != null) {
+											$('#resultArtistLink').attr('href',result['artistLink']);
+											if (result['artistImage'] != null) {
+												$('#resultArtistImage').attr('src',result['artistImage']);
+											} else {
+												$('#resultArtistImage').attr('src','noimage.jpg');
+											}
+											$('#resultArtistImage').show();
+										} else {
+											$('#resultArtistImage').hide();
+										}
+										
+										if (result['videoLink'] != null) {
+											$('#resultVideoLink').attr('href',result['videoLink']);
+											if (result['videoImage'] != null) {
+												$('#resultVideoImage').attr('src',result['videoImage']);
+											} else {
+												$('#resultVideoImage').attr('src','noimage.jpg');
+											}
+											$('#resultVideoImage').show();
+										} else {
+											$('#resultVideoImage').hide();
+										}
+										
+										if (result['albumLink'] != null) {
+											$('#resultAlbumLink').attr('href',result['albumLink']);
+											if (result['albumImage'] != null) {
+												$('#resultAlbumImage').attr('src',result['albumImage']);
+											} else {
+												$('#resultAlbumImage').attr('src','noimage.jpg');
+											}
+											$('#resultAlbumImage').show();
+										} else {
+											$('#resultAlbumImage').hide();
+										}
+										
+										$('#player__source').attr('src',result['download128']);
+										
+										$('#result128').val(result['download128']);
+										$('#a128').attr('href',result['download128']);
+										
+										if (result['download320'] != '')
 										{
-											$('#resultLyric').val(result['lyric']);
-											$('#btnLyric').removeAttr('disabled');
-											$('#btnDownloadLyric').attr('href',result['lyric']);
+											$('#a320').attr('href',result['download320']);
+											$('#result320').val(result['download320']);
+											$('#form320').show();
+										} else {
+											$('#form320').hide();
+										}
+										
+										if (result['downloadLl'] != '')
+										{
+											$('#aLl').attr('href',result['downloadLl']);
+											$('#resultLl').val(result['downloadLl']);
+											$('#formLl').show();
+										} else{
+											$('#formLl').hide();
+										}
+										
+										if (result['lyricFile'] != '' && result['lyricFile'] != 'http://lrc.nct.nixcdn.com/null')
+										{
+											$('#resultLyricFile').val(result['lyricFile']);
+											$('#aLyricFile').attr('href',result['lyricFile']);
+											$('#formLyricFile').show();
 										}
 										else
 										{
-											$('#resultLyric').val('Không có');
-											$('#btnLyric').attr('disabled','disabled');
+											$('#formLyricFile').hide();
 										}
 
 										if (result['lyricText'] != '')
 										{
-											$('#lyricText').html(result['lyricText']);
+											$('#resultlyricText').html(result['lyricText']);
+											$('#lyricTextDiv').show();
 										} else{
-											$('#lyricText').text('Không có');
-										}
-
-										if (result['downloadHq'] != '')
-										{
-											$('#btnDownloadHq').attr('href',result['downloadHq']);
-											$('#resultDownloadHq').val(result['downloadHq']);
-											$('#btnHq').removeAttr('disabled');
-										} else{
-											$('#resultDownloadHq').val('Không có');
-											$('#btnHq').attr('disabled','disabled');
+											$('#lyricTextDiv').hide();
 										}
 
 										$('#resultEmbed').val(result['embed']);

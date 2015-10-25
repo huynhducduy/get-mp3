@@ -136,9 +136,50 @@ body {
 .lyric .pd_lyric {
     line-height: 28px;
     background: transparent url(line_lyric.png) left -5px;
-    max-height: 250px;
-    overflow: hidden;
     font-size: 14px;
     font-weight: 300;
     color: #333;
+	max-height:none;
+	margin-bottom:5px
+}
+.jumbotron {
+	padding: 15px 0 !important;
+}
+#errorAlert {
+	margin-bottom: 0;
+	display: none;
+}
+#result {
+	display: none;
+}
+#loading {
+	display: none
+}
+#resultContainer {
+	display: none;
+	text-align: center;
+}
+.img-circle {
+	display: none;
+}
+.imageContainer {
+	text-align: center;
+}
+#mainInfo {
+	text-align: center;
+	margin-top: 10px;
+}
+a.noStyle {
+	text-decoration: none;
+	color:#000;
+}
+label.control-label {
+	font-weight: normal;
+}
+h2#4lyric {
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+#_divLyricHtml {
+	background-color: #fff;
 }
