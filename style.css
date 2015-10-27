@@ -57,7 +57,7 @@ body {
     margin-top: 20px;
     position: relative;
 }
-.player .player__control {
+.player .playerControl {
     border-radius: 4px;
     background-color: #337ab7;
     border: 1px solid #2e6da4;

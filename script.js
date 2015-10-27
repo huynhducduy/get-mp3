@@ -6,16 +6,14 @@
  */
 
 $(document).ready(function() {
-	var player = document.getElementById('player__source'),
-	playLoading = document.querySelectorAll('.player__loading span'),
+	var player = document.getElementById('playerSource'),
 	playPause = document.getElementById('playPause'),
 	currentTime = document.getElementById('currentTime'),
 	seek = document.getElementById('seek'),
 	durationTime = document.getElementById('durationTime'),
 	muted = document.getElementById('muted'),
 	timeInterval,
-	i,
-	len = playLoading.length;
+	i;
 
 	window.onload = function() {
 		playPause.addEventListener('click', playPauseMusic, false);
@@ -24,24 +22,17 @@ $(document).ready(function() {
 	};
 
 	function playPauseMusic() {
-		var i, len = playLoading.length;
 		if (player.paused) {
 			player.play();
 			timeInterval = setInterval(timeUpdateMusic, 100);
 			seek.addEventListener('change', seekMusic, false);
 			playPause.classList.remove('icon-play');
 			playPause.classList.add('icon-pause');
-			for (i = 0; i < len; i++) {
-				playLoading[i].classList.add('active');
-			}
 		} else {
 			player.pause();
 			clearInterval(timeInterval);
 			playPause.classList.remove('icon-pause');
 			playPause.classList.add('icon-play');
-			for (i = 0; i < len; i++) {
-				playLoading[i].classList.remove('active');
-			}
 		}
 	}
 
@@ -86,15 +77,11 @@ $(document).ready(function() {
 		player.currentTime = 0;
 		playPause.classList.remove('icon-pause');
 		playPause.classList.add('icon-play');
-		for (i = 0; i < len; i++) {
-			playLoading[i].classList.remove('active');
-		}
 	}
 });
 
 	function getInfo()
 	{
-		$('#playPause').click();
 		$('#result').fadeIn('fast', function () {
 			$('#errorAlert').fadeOut('fast', function () {
 				$('#resultContainer').fadeOut('fast', function () {
@@ -168,7 +155,7 @@ $(document).ready(function() {
 											$('#resultAlbumImage').hide();
 										}
 										
-										$('#player__source').attr('src',result['download128']);
+										$('#playerSource').attr('src',result['download128']);
 										
 										$('#result128').val(result['download128']);
 										$('#a128').attr('href',result['download128']);
@@ -212,7 +199,7 @@ $(document).ready(function() {
 
 										$('#resultEmbed').val(result['embed']);
 										$('#resultContainer').show();
-										$('#playPause').click();
+										$('#playPause').click(); // Play music
 									}
 								});
 							}
