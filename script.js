@@ -78,8 +78,22 @@ $(document).ready(function() {
 		playPause.classList.remove('icon-pause');
 		playPause.classList.add('icon-play');
 	}
+	
+	$('#method').change(function(){
+		if ($('#method').val() == '1')
+		{
+			$('#method1').show();
+			$('#method2').hide();
+		} else if ($('#method').val() == '2')
+		{
+			$('#method2').show();
+			$('#method1').hide();
+		}
+	});
 });
 
+
+	
 	function getInfo()
 	{
 		$('#result').fadeIn('fast', function () {
@@ -93,7 +107,9 @@ $(document).ready(function() {
 							data : {
 								title : $('#title').val(),
 								artist: $('#artist').val(),
-								type: $('#type').val()
+								type: $('#type').val(),
+								method: $('#method').val(),
+								link: $('#link').val()
 							},
 							success : function (result)
 							{
@@ -101,11 +117,13 @@ $(document).ready(function() {
 									if (result['error'] != 0)
 									{
 										if (result['error'] == 1) {
-											$('#errorContent').text('Chưa nhập tên bài hát');
+											$('#errorContent').text('Chưa nhập đủ thông tin');
 										} else if (result['error'] == 2) {
-											$('#errorContent').text('Phương thức không đúng');
+											$('#errorContent').text('Nơi tìm kiếm không đúng');
 										} else if (result['error'] == 3) {
-											$('#errorContent').text('Không tìm thấy bài hát nào');
+											$('#errorContent').text('Không tìm thấy bài hát');
+										} else if (result['error'] == 4) {
+											$('#errorContent').text('Phương thức không đúng');
 										}
 										$('#errorAlert').show();
 									} else

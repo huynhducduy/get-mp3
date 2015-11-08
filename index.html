@@ -52,15 +52,24 @@
 				<div class="container">
 					<form class="navbar-form" onsubmit="return getInfo()">
 						<div class="form-group">
-							<input type="text" placeholder="Bài hát" class="form-control" id="title" name="title">
+							<select class="form-control" id="method" name="method">
+								<option value="1" selected>Thông tin</option>
+								<option value="2">Link</option>
+							</select>
 						</div>
-						<div class="form-group">
+						<div id='method1' class="form-group">
+							<input type="text" placeholder="Bài hát" class="form-control" id="title" name="title">
 							<input type="text" placeholder="Nghệ sĩ" class="form-control" id="artist" name="artist">
 						</div>
-						<select class="form-control" id="type" name="type">
-							<option value="1" selected>Zing Mp3</option>
-							<option value="2">NhacCuaTui</option>
-						</select>
+						<div id='method2' style='display: none' class="form-group">
+							<input type="text" placeholder="Link" class="form-control" id="link" name="link">
+						</div>
+						<div class="form-group">
+							<select class="form-control" id="type" name="type">
+								<option value="1" selected>Zing Mp3</option>
+								<option value="2">NhacCuaTui</option>
+							</select>
+						</div>
 						<button type="submit" class="btn btn-primary" id="submit" name="submit">Tìm</button>
 					</form>
 				</div>

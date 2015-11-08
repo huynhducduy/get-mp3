@@ -39,26 +39,48 @@
 	$title = $_GET['title'];
 	$artist = $_GET['artist'];
 	$hostType = $_GET['type'];
-	switch ($hostType) {
-		case '1': // Zing Mp3
-			if ($title == '')
-			{
-				$mp3['error'] = 1;
-			}
-			else
-			{
-				$mp3['error'] = 0;
+	$method = $_GET['method'];
+	$link = $_GET['link'];
 
-				$url = 'http://mp3.zing.vn/tim-kiem/bai-hat.html?q='.rawurlencode($title);
+	if (($title == '' && $method == '1')
+	 || ($link == '' && $method == '2'))
+	{
+		$mp3['error'] = 1;
+	}
+	else
+	{
+		$mp3['error'] = 0;
+		switch ($hostType) {
+			case '1': // Zing Mp3
 
-				if ($artist != '') {
-					$url .= rawurlencode(' - '.$artist);
+				switch ($method) {
+					case '1':
+					
+						$url = 'http://mp3.zing.vn/tim-kiem/bai-hat.html?q='.rawurlencode($title);
+			
+						if ($artist != '') {
+							$url .= rawurlencode(' - '.$artist);
+						}
+						$url .= '&filter=hq'; // hq,official,hit
+						$url .= '&sort=total_play'; // total_play,created_date
+				
+						$mp3SearchContent = goCurl($url);
+						$mp3EncodeId = getStr($mp3SearchContent,'<div class="item-song" id="song','"');
+						
+					break;
+					case '2':
+					
+						$mp3EncodeId = explode('/',$link);
+						$mp3EncodeId = explode('.',$mp3EncodeId['5']);
+						$mp3EncodeId = $mp3EncodeId['0'];
+						
+					break;
+					default:
+						$mp3['error'] = 4;
+					break;
 				}
-				$url .= '&filter=hq'; // hq,official,hit
-				$url .= '&sort=total_play'; // total_play,created_date
 
-				$mp3SearchContent = goCurl($url);
-				$mp3EncodeId = getStr($mp3SearchContent,'<div class="item-song" id="song','"');
+
 				if ($mp3EncodeId != '')
 				{
 					$zingMp3Api = 'http://api.mp3.zing.vn/api/mobile/';
@@ -104,33 +126,41 @@
 				{
 					$mp3['error'] = 3;
 				}
-			}
-		break;
-
-		case '2': // NCT
-			if ($title == '')
-			{
-				$mp3['error']=1;
-			}
-			else
-			{
-				$mp3['error'] = 0;
-
-				$url = 'http://www.nhaccuatui.com/tim-nang-cao?title='.rawurlencode($title);
-
-				if ($artist != '') {
-					$url .= '&singer='.rawurlencode($artist);
+			break;
+	
+			case '2': // NCT
+				switch ($method) {
+					case '1':
+					
+						$url = 'http://www.nhaccuatui.com/tim-nang-cao?title='.rawurlencode($title);
+			
+						if ($artist != '') {
+							$url .= '&singer='.rawurlencode($artist);
+						}
+						
+						$mp3SearchContent = goCurl($url);
+						$mp3Id = getStr($mp3SearchContent,'<a href="javascript:;" id="btnShowBoxPlaylist_','"');
+						
+					break;
+					case '2':
+					
+						$mp3Id = explode('/',$link);
+						$mp3Id = getStr($mp3Id['4'],'.','.');
+						
+					break;
+					default:
+						$mp3['error'] = 4;
+					break;
 				}
-				$mp3SearchContent = goCurl($url);
-				$mp3Id = getStr($mp3SearchContent,'<a href="javascript:;" id="btnShowBoxPlaylist_','"');
+				
 				if ($mp3Id != '')
 				{
 					$mp3Content = goCurl('http://www.nhaccuatui.com/bai-hat/a.'.$mp3Id.'.html');
 					$mp3XmlId = getStr($mp3Content,'http://www.nhaccuatui.com/flash/xml?html5=true&key1=','";');
 					$mp3XmlContent = goCurl('http://www.nhaccuatui.com/flash/xml?html5=true&key1='.$mp3XmlId);
-
+	
 					////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+	
 					$mp3['link'] = getStr(getStr($mp3XmlContent,'<info>','</info>'),'<![CDATA[',']]>');
 					$mp3['title'] = getStr(getStr($mp3XmlContent,'<title>','</title>'),'<![CDATA[',']]>');
 					$mp3['artist'] = getStr(getStr($mp3XmlContent,'<creator>','</creator>'),'<![CDATA[',']]>');
@@ -143,7 +173,7 @@
 					$mp3['download128'] = getStr(getStr($mp3XmlContent,'<location>','</location>'),'<![CDATA[',']]>');
 					
 					////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+	
 					$mp3HqJsonContent = goCurl('http://www.nhaccuatui.com/download/song/'.$mp3Id);
 					$mp3['download320'] = str_replace('\/','/',getStr($mp3HqJsonContent,'"stream_url":"','"'));
 					$mp3['downloadLl'] = '';
@@ -152,14 +182,12 @@
 				{
 					$mp3['error'] = 3;
 				}
-			}
-
-		break;
-		default:
-			$mp3['error']=2;
-		break;
+			break;
+			default:
+				$mp3['error']=2;
+			break;
+		}
 	}
-
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 	die (json_encode($mp3));
